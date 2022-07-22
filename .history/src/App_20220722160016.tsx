@@ -41,7 +41,6 @@ const PokemonTable: React.FunctionComponent<{
             <td>{p.special_attack}</td>
             <td>{p.special_defense}</td>
             <td>{p.speed}</td>
-            <td>{p.power}</td>
           </tr>
         ))}
       </tbody>

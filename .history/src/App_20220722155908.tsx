@@ -11,12 +11,11 @@ const calculatePower = (pokemon: Pokemon) =>
   pokemon.special_defense +
   pokemon.speed;
 
-interface PokemonWithPower extends Pokemon {
-  power: number;
-}
+
+interface 
 
 const PokemonTable: React.FunctionComponent<{
-  pokemon: PokemonWithPower[];
+  pokemon: Pokemon[];
 }> = ({ pokemon }) => {
   return (
     <table>
@@ -41,7 +40,6 @@ const PokemonTable: React.FunctionComponent<{
             <td>{p.special_attack}</td>
             <td>{p.special_defense}</td>
             <td>{p.speed}</td>
-            <td>{p.power}</td>
           </tr>
         ))}
       </tbody>
@@ -56,7 +54,8 @@ export default function App() {
     getAll().then(setPokemon);
   }, []);
 
-  const pokemonWithPower = pokemon.map((p) => ({ ...p, power: calculatePower(p) }));
+  const pokemonWithPower = () =>
+    pokemon.map((p) => ({ ...p, power: calculatePower(p) }));
 
   return (
     <div>
