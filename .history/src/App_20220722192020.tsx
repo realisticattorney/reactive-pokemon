@@ -2,9 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Pokemon, getAll, getByName } from './API';
 
 import './styles.css';
-interface PokemonWithPower extends Pokemon {
-  power: number;
-}
 
 const calculatePower = (pokemon: Pokemon) =>
   pokemon.hp +
@@ -14,11 +11,15 @@ const calculatePower = (pokemon: Pokemon) =>
   pokemon.special_defense +
   pokemon.speed;
 
-let tableRender = 0;
+interface PokemonWithPower extends Pokemon {
+  power: number;
+}
+
+let tableRenders = 0;
 const PokemonTable: React.FunctionComponent<{
   pokemon: PokemonWithPower[];
 }> = ({ pokemon }) => {
-  console.log(`tableRender = ${tableRender++}`);
+  console.log(`tableRenders: ${tableRenders++}`);
   return (
     <table>
       <thead>
@@ -49,27 +50,7 @@ const PokemonTable: React.FunctionComponent<{
     </table>
   );
 };
-const MemoedPokemonTable = React.memo(PokemonTable);
-
-const ArrayWithAdd = () => {
-  const [numbers, setNumbers] = useState<number[]>([]);
-
-  useEffect(() => {
-    fetch('numbers.json')
-      .then((data) => data.json())
-      .then(setNumbers);
-  }, []);
-
-  const onSetNumbers = () =>
-    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
-
-  return (
-    <div>
-      <h1>{JSON.stringify(numbers)}</h1>
-      {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
-    </div>
-  );
-};
+const memo
 
 let renders = 0;
 export default function App() {
@@ -93,20 +74,18 @@ export default function App() {
         power: calculatePower(p),
       })),
     [pokemon]
-  );
-
-  //.filter((p) => p.power > threshold),
+  ); //.filter((p) => p.power > threshold),
 
   const onCountThreshold = pokemonWithPower.filter(
     (p) => p.power > threshold
   ).length;
 
-  const onPowerThresholdChange = (evt: React.ChangeEvent<HTMLInputElement>) =>
+  const onPowerThresholdChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setThreshold(parseInt(evt.target.value, 10));
+  };
 
   return (
     <div>
-      <ArrayWithAdd />
       <div className="top-bar">
         <div>Search</div>
         <input type="text"></input>
@@ -119,7 +98,7 @@ export default function App() {
         <div>Count over threshold: {onCountThreshold}</div>
       </div>
       <div className="two-column">
-        <MemoedPokemonTable pokemon={pokemonWithPower} />
+        <PokemonTable pokemon={pokemonWithPower} />
         <div>
           <div>Min: </div>
           <div>Max: </div>

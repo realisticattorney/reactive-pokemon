@@ -49,27 +49,7 @@ const PokemonTable: React.FunctionComponent<{
     </table>
   );
 };
-const MemoedPokemonTable = React.memo(PokemonTable);
-
-const ArrayWithAdd = () => {
-  const [numbers, setNumbers] = useState<number[]>([]);
-
-  useEffect(() => {
-    fetch('numbers.json')
-      .then((data) => data.json())
-      .then(setNumbers);
-  }, []);
-
-  const onSetNumbers = () =>
-    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
-
-  return (
-    <div>
-      <h1>{JSON.stringify(numbers)}</h1>
-      {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
-    </div>
-  );
-};
+const Memoed = React.memo(PokemonTable);
 
 let renders = 0;
 export default function App() {
@@ -101,28 +81,24 @@ export default function App() {
     (p) => p.power > threshold
   ).length;
 
-  const onPowerThresholdChange = (evt: React.ChangeEvent<HTMLInputElement>) =>
+  const onPowerThresholdChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setThreshold(parseInt(evt.target.value, 10));
+  };
 
   return (
     <div>
-      <ArrayWithAdd />
       <div className="top-bar">
         <div>Search</div>
-        <input type="text"></input>
+        <input type="text" value={search} onChange={onSetSearch}></input>
         <div>Power threshold</div>
-        <input
-          value={threshold ? threshold : ''}
-          onChange={onPowerThresholdChange}
-          type="text"
-        ></input>
-        <div>Count over threshold: {onCountThreshold}</div>
+        <input type="text" value={threshold} onChange={onSetThreshold}></input>
+        <div>Count over threshold: {countOverThreshold}</div>
       </div>
       <div className="two-column">
         <MemoedPokemonTable pokemon={pokemonWithPower} />
         <div>
-          <div>Min: </div>
-          <div>Max: </div>
+          <div>Min: {min}</div>
+          <div>Max: {max}</div>
         </div>
       </div>
     </div>

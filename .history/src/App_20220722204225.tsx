@@ -124,6 +124,7 @@ export default function App() {
           <div>Min: </div>
           <div>Max: </div>
         </div>
+        
       </div>
     </div>
   );

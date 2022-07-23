@@ -51,25 +51,10 @@ const PokemonTable: React.FunctionComponent<{
 };
 const MemoedPokemonTable = React.memo(PokemonTable);
 
-const ArrayWithAdd = () => {
-  const [numbers, setNumbers] = useState<number[]>([]);
 
-  useEffect(() => {
-    fetch('numbers.json')
-      .then((data) => data.json())
-      .then(setNumbers);
-  }, []);
+const ArrayWithAdd = () =
 
-  const onSetNumbers = () =>
-    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
 
-  return (
-    <div>
-      <h1>{JSON.stringify(numbers)}</h1>
-      {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
-    </div>
-  );
-};
 
 let renders = 0;
 export default function App() {
@@ -106,7 +91,6 @@ export default function App() {
 
   return (
     <div>
-      <ArrayWithAdd />
       <div className="top-bar">
         <div>Search</div>
         <input type="text"></input>

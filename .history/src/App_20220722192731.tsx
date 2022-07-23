@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Pokemon, getAll, getByName } from './API';
 
 import './styles.css';
@@ -51,29 +51,9 @@ const PokemonTable: React.FunctionComponent<{
 };
 const MemoedPokemonTable = React.memo(PokemonTable);
 
-const ArrayWithAdd = () => {
-  const [numbers, setNumbers] = useState<number[]>([]);
-
-  useEffect(() => {
-    fetch('numbers.json')
-      .then((data) => data.json())
-      .then(setNumbers);
-  }, []);
-
-  const onSetNumbers = () =>
-    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
-
-  return (
-    <div>
-      <h1>{JSON.stringify(numbers)}</h1>
-      {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
-    </div>
-  );
-};
-
-let renders = 0;
+let appRender = 0;
 export default function App() {
-  console.log(`renders ${renders++}`);
+  console.log(`appRender = ${appRender++}`);
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [threshold, setThreshold] = useState(0);
 
@@ -96,27 +76,28 @@ export default function App() {
   );
 
   //.filter((p) => p.power > threshold),
+  const countOverThreshold = useMemo(
+    () => pokemonWithPower.filter((p) => p.power > threshold).length,
+    [pokemonWithPower, threshold]
+  );
 
-  const onCountThreshold = pokemonWithPower.filter(
-    (p) => p.power > threshold
-  ).length;
-
-  const onPowerThresholdChange = (evt: React.ChangeEvent<HTMLInputElement>) =>
-    setThreshold(parseInt(evt.target.value, 10));
+  const onSetThreshold = useCallback(
+    (evt) => setThreshold(parseInt(evt.target.value, 10)),
+    []
+  );
 
   return (
     <div>
-      <ArrayWithAdd />
       <div className="top-bar">
         <div>Search</div>
         <input type="text"></input>
         <div>Power threshold</div>
         <input
           value={threshold ? threshold : ''}
-          onChange={onPowerThresholdChange}
+          onChange={onSetThreshold}
           type="text"
         ></input>
-        <div>Count over threshold: {onCountThreshold}</div>
+        <div>Count over threshold: {countOverThreshold}</div>
       </div>
       <div className="two-column">
         <MemoedPokemonTable pokemon={pokemonWithPower} />
