@@ -54,41 +54,24 @@ const MemoedPokemonTable = React.memo(PokemonTable);
 const ArrayWithAdd = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
   const [amount, setAmount] = useState<number>(1);
-
+  
   useEffect(() => {
     fetch('numbers.json')
       .then((data) => data.json())
       .then(setNumbers);
   }, []);
 
-  // const onSetNumbers = () =>
-  //   setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
+  const onSetNumbers = () =>
+    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
 
-  const onSetNumbers = () => {
-    const arrToAdd = Array(amount)
-      .fill(1)
-      .map((_, i) => numbers.length + 1 + i);
 
-    return arrToAdd.forEach((n) => setNumbers((prev) => [...prev, n]));
-  };
-
-  const onSetAmount = (evt: React.ChangeEvent<HTMLInputElement>) =>
-    setAmount(parseInt(evt.target.value, 10));
-
+  const onSetAmount = (evt: React.ChangeEvent<number>) => setAmount(parseInt(evt.target.value))
+    
   return (
     <div>
       <h1>{JSON.stringify(numbers)}</h1>
       {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
-      <div>
-        <button onClick={() => setAmount((prev) => prev + 1)}>+</button>
-        <input type="text" value={amount} onChange={onSetAmount} />
-        <button
-          disabled={amount <= 1}
-          onClick={() => setAmount((prev) => prev - 1)}
-        >
-          -
-        </button>
-      </div>
+      <input type="text" value={amount} onChange={onSetAmount} />
     </div>
   );
 };

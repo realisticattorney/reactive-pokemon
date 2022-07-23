@@ -65,11 +65,8 @@ const ArrayWithAdd = () => {
   //   setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
 
   const onSetNumbers = () => {
-    const arrToAdd = Array(amount)
-      .fill(1)
-      .map((_, i) => numbers.length + 1 + i);
-
-    return arrToAdd.forEach((n) => setNumbers((prev) => [...prev, n]));
+    console.log(Array(amount).fill(1).map(_, i) => i));
+    return setNumbers((prev) => [...prev, numbers.length + 1]);
   };
 
   const onSetAmount = (evt: React.ChangeEvent<HTMLInputElement>) =>

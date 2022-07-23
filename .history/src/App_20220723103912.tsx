@@ -61,16 +61,8 @@ const ArrayWithAdd = () => {
       .then(setNumbers);
   }, []);
 
-  // const onSetNumbers = () =>
-  //   setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
-
-  const onSetNumbers = () => {
-    const arrToAdd = Array(amount)
-      .fill(1)
-      .map((_, i) => numbers.length + 1 + i);
-
-    return arrToAdd.forEach((n) => setNumbers((prev) => [...prev, n]));
-  };
+  const onSetNumbers = () =>
+    setNumbers((prevArr) => [...prevArr, numbers.length + 1]);
 
   const onSetAmount = (evt: React.ChangeEvent<HTMLInputElement>) =>
     setAmount(parseInt(evt.target.value, 10));
@@ -80,14 +72,9 @@ const ArrayWithAdd = () => {
       <h1>{JSON.stringify(numbers)}</h1>
       {numbers.length > 0 && <button onClick={onSetNumbers}>ADD +</button>}
       <div>
-        <button onClick={() => setAmount((prev) => prev + 1)}>+</button>
-        <input type="text" value={amount} onChange={onSetAmount} />
-        <button
-          disabled={amount <= 1}
-          onClick={() => setAmount((prev) => prev - 1)}
-        >
-          -
-        </button>
+      <button onChange={() => setAmount()}>+</button>
+      <input type="text" value={amount} onChange={onSetAmount} />
+      <button>-</button>
       </div>
     </div>
   );
